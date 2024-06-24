@@ -1,0 +1,52 @@
+// SPDX-License-Identifier: MIT 
+pragma solidity ^0.8.0; 
+contract Attendance { 
+mapping(uint256 => bool) public isStudentPresent; 
+event LogAttendance(uint256 indexed rollNumber, bool isPresent); 
+uint256 public classStrength; 
+constructor(uint256 _classStrength) { 
+classStrength = _classStrength; 
+} 
+function markAttendance(uint256 rollNumber) external { 
+require(rollNumber <= classStrength, "Invalid roll number"); 
+isStudentPresent[rollNumber] = true; 
+emit LogAttendance(rollNumber, true); 
+} 
+function getPresentees() external view returns (uint256[] memory) 
+{ 
+uint256 count = 0; 
+for (uint256 i = 1; i <= classStrength; i++) { 
+if (isStudentPresent[i]) { 
+count++; 
+} 
+} 
+uint256[] memory presentees = new uint256[](count); 
+uint256 index = 0; 
+for (uint256 i = 1; i <= classStrength; i++) { 
+if (isStudentPresent[i]) { 
+presentees[index] = i; 
+index++; 
+} 
+} 
+return presentees; 
+} 
+{ 
+function getAbsentees() external view returns (uint256[] memory) 
+Conclusion 
+uint256 count = 0; 
+for (uint256 i = 1; i <= classStrength; i++) { 
+if (!isStudentPresent[i]) { 
+count++; 
+} 
+} 
+uint256[] memory absentees = new uint256[](count); 
+uint256 index = 0; 
+for (uint256 i = 1; i <= classStrength; i++) { 
+if (!isStudentPresent[i]) { 
+absentees[index] = i; 
+index++; 
+} 
+} 
+return absentees; 
+} 
+} 
